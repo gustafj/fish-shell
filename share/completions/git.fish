@@ -207,6 +207,11 @@ function __fish_git_files
     end
 end
 
+function __fish_git_rm_files
+    # git ls-files hands us filenames in (or subdir of) the current dir
+    command git ls-files --cached --modified --killed (commandline -ct)* 2>/dev/null
+end
+
 function __fish_git_ranges
     set -l both (commandline -ot | string split "..")
     set -l from $both[1]
@@ -1107,6 +1112,7 @@ complete -c git -n '__fish_git_using_command rm' -s r -d 'Allow recursive remova
 complete -c git -n '__fish_git_using_command rm' -s q -l quiet -d 'Be quiet'
 complete -c git -n '__fish_git_using_command rm' -s f -l force -d 'Override the up-to-date check'
 complete -c git -n '__fish_git_using_command rm' -s n -l dry-run -d 'Dry run'
+complete -c git -n '__fish_git_using_command rm; and not __fish_contains_opt cached and not __fish_contains_opt force' -f -a '(__fish_git_rm_files)'
 # TODO options
 
 ### status
